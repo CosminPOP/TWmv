@@ -1,0 +1,8 @@
+## Interface: 11200
+## Title: Turtle WoW Model Viewer
+## Author: Xerron/Er
+## Version: 1.0.0.0
+## Notes: Model Viewer for base building
+## SavedVariables:
+mvdata.lua
+TWmv.xml

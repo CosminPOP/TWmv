@@ -1,0 +1,713 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.blizzard.com/wow/ui/..\FrameXML\UI.xsd">
+    <Script file="TWmv.lua"/>
+
+    <Frame name="CatButtonTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="184" y="21"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT">
+                <Offset>
+                    <AbsDimension x="8" y="-40"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true" edgeSize="1">
+            <Color a=".3"/>
+        </Backdrop>
+        <Frames>
+            <Button name="$parentLoadButton" inherits="UIPanelButtonTemplate2" text="">
+                <Size>
+                    <AbsDimension x="180" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT">
+                        <Offset>
+                            <AbsDimension x="12" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        CatButton_OnClick(this:GetText())
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnEnter>
+            </OnEnter>
+            <OnLeave>
+            </OnLeave>
+        </Scripts>
+    </Frame>
+
+    <Frame name="ModelButtonTemplate" virtual="true">
+        <Size>
+            <AbsDimension x="184" y="21"/>
+        </Size>
+        <Anchors>
+            <Anchor point="TOPLEFT">
+                <Offset>
+                    <AbsDimension x="8" y="-40"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Backdrop bgFile="Interface\Tooltips\UI-Tooltip-Background" tile="true" edgeSize="1">
+            <Color a=".3"/>
+        </Backdrop>
+        <Frames>
+
+            <Button name="$parentLoadButton" inherits="UIPanelButtonTemplate2" text="">
+
+                <Size>
+                    <AbsDimension x="180" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="LEFT">
+                        <Offset>
+                            <AbsDimension x="2" y="0"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        LoadModelButton_OnClick(this:GetID())
+                    </OnClick>
+                </Scripts>
+            </Button>
+        </Frames>
+        <Scripts>
+            <OnEnter>
+            </OnEnter>
+            <OnLeave>
+            </OnLeave>
+        </Scripts>
+    </Frame>
+
+    <Frame name="TWmvGO" hidden="true" toplevel="true" parent="UIParent" movable="true" enableMouse="true">
+        <Size>
+            <AbsDimension x="380" y="250"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER">
+                <Offset>
+                    <AbsDimension x="0" y="0"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentSmallBackground" file="Interface\Addons\TWmv\images\ui_small">
+                    <Size>
+                        <AbsDimension x="512" y="512"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BORDER">
+
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString name="$parentSmallTitleText" inherits="GameFontNormal" text="Edit GO">
+                    <Size>
+                        <AbsDimension x="512" y="14"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP">
+                            <Offset>
+                                <AbsDimension x="-15" y="-15"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+
+                <FontString name="$parentGUIDText" inherits="GameFontNormal" text="GUID: 1231231232">
+                    <Size>
+                        <AbsDimension x="150" y="14"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT">
+                            <Offset>
+                                <AbsDimension x="15" y="1"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+
+                <FontString name="$parentFactorText" inherits="GameFontNormal" text="Move factor:              1"
+                justifyH="LEFT">
+                    <Size>
+                        <AbsDimension x="250" y="14"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT">
+                            <Offset>
+                                <AbsDimension x="65" y="-45"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+
+            </Layer>
+        </Layers>
+        <Frames>
+
+            <Button name="$parentFactorMinus" inherits="UIPanelButtonTemplate2" text="-">
+                <Size>
+                    <AbsDimension x="25" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-85" y="-42"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        FactorChange_OnClick(-1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentFactorPlus" inherits="UIPanelButtonTemplate2" text="+">
+                <Size>
+                    <AbsDimension x="25" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="0" y="-42"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        FactorChange_OnClick(1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-3" y="-22"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
+
+            <Button name="$parentDeleteGO" inherits="UIPanelButtonTemplate2" text="Delete GO">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="0" y="-1"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        DeleteGO_OnClick()
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentDoneGO" inherits="UIPanelButtonTemplate2" text="Done">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="-120" y="-1"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                       DoneGO_OnClick()
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentTurnGO" inherits="UIPanelButtonTemplate2" text="Turn (based on player orientation)">
+                <Size>
+                    <AbsDimension x="200" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="30" y="-200"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        TurnGo_OnClick()
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+
+            <Button name="$parentXP" inherits="UIPanelButtonTemplate2" text="Move +X">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="30" y="-80"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        MoveGoX_OnClick(1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentXM" inherits="UIPanelButtonTemplate2" text="Move -X">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="130" y="-80"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        MoveGoX_OnClick(-1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+
+            <Button name="$parentYP" inherits="UIPanelButtonTemplate2" text="Move +Y">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="30" y="-110"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        MoveGoY_OnClick(1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentYM" inherits="UIPanelButtonTemplate2" text="Move -Y">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="130" y="-110"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        MoveGoY_OnClick(-1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentZP" inherits="UIPanelButtonTemplate2" text="Move +Z">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="30" y="-140"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        MoveGoZ_OnClick(1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+            <Button name="$parentZM" inherits="UIPanelButtonTemplate2" text="Move -Z">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="130" y="-140"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        MoveGoZ_OnClick(-1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                this:RegisterForDrag("LeftButton");
+                this:SetMovable(1);
+                this:SetUserPlaced(true);
+            </OnLoad>
+            <OnDragStart>
+                this:StartMoving();
+                this.isMoving = true;
+            </OnDragStart>
+            <OnDragStop>
+                this:StopMovingOrSizing();
+                this.isMoving = false;
+            </OnDragStop>
+        </Scripts>
+    </Frame>
+
+    <Frame name="TWmv" hidden="false" toplevel="true" parent="UIParent" movable="true"
+           enableMouse="true">
+        <Size>
+            <AbsDimension x="1024" y="530"/>
+        </Size>
+        <Anchors>
+            <Anchor point="CENTER">
+                <Offset>
+                    <AbsDimension x="0" y="0"/>
+                </Offset>
+            </Anchor>
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture name="$parentUILeft" file="Interface\Addons\TWmv\images\ui_left">
+                    <Size>
+                        <AbsDimension x="512" y="512"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+                <Texture name="$parentUIRight" file="Interface\Addons\TWmv\images\ui_right">
+                    <Size>
+                        <AbsDimension x="512" y="512"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPRIGHT">
+                            <Offset>
+                                <AbsDimension x="0" y="0"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </Texture>
+            </Layer>
+            <Layer level="BORDER">
+
+            </Layer>
+            <Layer level="ARTWORK">
+                <FontString name="$parentTitleText" inherits="GameFontNormal"
+                            text="Turtle WoW Model Viewer Base Builder Helper 9000">
+                    <Size>
+                        <AbsDimension x="512" y="14"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOP" relativePoint="TOP">
+                            <Offset>
+                                <AbsDimension x="0" y="-18"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+
+                <FontString name="$parentGOCount" inherits="GameFontNormalSmall"
+                            text="1233">
+                    <Size>
+                        <AbsDimension x="60" y="14"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="BOTTOMLEFT">
+                            <Offset>
+                                <AbsDimension x="8" y="30"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+
+                <FontString name="$parentCategoriesTitle" inherits="GameFontNormalLarge"
+                            text="Categories">
+                    <Size>
+                        <AbsDimension x="160" y="14"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="38" y="-80"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+
+                <FontString name="$parentModelsTitle" inherits="GameFontNormalLarge"
+                            text="Models">
+                    <Size>
+                        <AbsDimension x="160" y="14"/>
+                    </Size>
+                    <Anchors>
+                        <Anchor point="TOPLEFT">
+                            <Offset>
+                                <AbsDimension x="238" y="-80"/>
+                            </Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+
+
+            </Layer>
+        </Layers>
+        <Frames>
+
+            <ScrollFrame name="MVCatsScrollFrame" hidden="false" inherits="FauxScrollFrameTemplate">
+                <Size>
+                    <AbsDimension x="200" y="402"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="-2" y="-75"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnVerticalScroll>
+                        FauxScrollFrame_OnVerticalScroll(22, CatsList_Update);
+                    </OnVerticalScroll>
+                </Scripts>
+            </ScrollFrame>
+
+            <ScrollFrame name="MVModelsScrollFrame" hidden="false" inherits="FauxScrollFrameTemplate">
+                <Size>
+                    <AbsDimension x="200" y="402"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="209" y="-75"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnVerticalScroll>
+                        FauxScrollFrame_OnVerticalScroll(22, ModelsList_Update);
+                    </OnVerticalScroll>
+                </Scripts>
+            </ScrollFrame>
+
+            <Button name="$parentCloseButton" inherits="UIPanelCloseButton">
+                <Anchors>
+                    <Anchor point="CENTER" relativePoint="TOPRIGHT">
+                        <Offset>
+                            <AbsDimension x="-12" y="-25"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+            </Button>
+
+            <PlayerModel name="mvmodel" scale="1" enableMouse="true">
+                <Size>
+                    <AbsDimension x="570" y="403"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="443" y="-75"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                          tile="false">
+                    <TileSize>
+                        <AbsValue val="1"/>
+                    </TileSize>
+                </Backdrop>
+                <Scripts>
+                    <OnUpdate>
+                        <!--                            XmogModel_OnUpdate(arg1, this);-->
+                    </OnUpdate>
+                    <OnMouseWheel>
+                        MVmodelWHeel(this, arg1)
+                    </OnMouseWheel>
+                    <OnLoad>
+                        this:RegisterForDrag("LeftButton", "RightButton")
+                    </OnLoad>
+                    <OnDragStart>
+                        MVmodelDrag(arg1)
+                    </OnDragStart>
+                    <OnDragStop>
+                        MVmodelDrag(arg1)
+                    </OnDragStop>
+                </Scripts>
+                <Frames>
+                    <Button name="XmogModelRotateLeftButton" hidden="true">
+                        <Size>
+                            <AbsDimension x="35" y="35"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT">
+                                <Offset>
+                                    <AbsDimension x="21" y="5"/>
+                                </Offset>
+                            </Anchor>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad>
+                                this:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
+                            </OnLoad>
+                            <OnClick>
+                                RoateModel_Left()
+                            </OnClick>
+                        </Scripts>
+                        <NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
+                        <PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
+                        <HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+                    </Button>
+                    <Button name="XmogModelRotateRightButton" hidden="true">
+                        <Size>
+                            <AbsDimension x="35" y="35"/>
+                        </Size>
+                        <Anchors>
+                            <Anchor point="TOPLEFT" relativeTo="XmogModelRotateLeftButton" relativePoint="TOPRIGHT"/>
+                        </Anchors>
+                        <Scripts>
+                            <OnLoad>
+                                this:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
+                            </OnLoad>
+                            <OnClick>
+                                RoateModel_Right()
+                            </OnClick>
+                        </Scripts>
+                        <NormalTexture file="Interface\Buttons\UI-RotationRight-Button-Up"/>
+                        <PushedTexture file="Interface\Buttons\UI-RotationRight-Button-Down"/>
+                        <HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
+                    </Button>
+                </Frames>
+            </PlayerModel>
+
+            <Button name="$parentAddGOButton" inherits="UIPanelButtonTemplate2" text="Add GO">
+                <Size>
+                    <AbsDimension x="200" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="-170" y="28"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        AddGoButton_OnClick()
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentNear" inherits="UIPanelButtonTemplate2" text="Scan near">
+                <Size>
+                    <AbsDimension x="100" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMRIGHT">
+                        <Offset>
+                            <AbsDimension x="-420" y="28"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        Near_OnClick()
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <EditBox name="$parentSearchEditBox" autoFocus="false" frameStrata="HIGH" historyLines="32"
+            text="Search...">
+                <Size>
+                    <AbsDimension x="160" y="22"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="BOTTOMLEFT">
+                        <Offset>
+                            <AbsDimension x="68" y="26"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                          edgeFile="Interface\Tooltips\UI-Tooltip-Border"
+                          tile="true">
+                    <EdgeSize>
+                        <AbsValue val="16"/>
+                    </EdgeSize>
+                    <TileSize>
+                        <AbsValue val="16"/>
+                    </TileSize>
+                    <BackgroundInsets>
+                        <AbsInset left="4" right="4" top="4" bottom="4"/>
+                    </BackgroundInsets>
+                </Backdrop>
+                <Scripts>
+                    <OnShow>
+                        this:ClearFocus();
+                    </OnShow>
+                    <OnEnterPressed>
+                        SearchBox_OnEnterPressed(this:GetText());
+                        this:SetText("");
+                    </OnEnterPressed>
+                    <OnEscapePressed>
+                        this:ClearFocus();
+                    </OnEscapePressed>
+                </Scripts>
+                <FontString inherits="ChatFontNormal" bytes="256"/>
+            </EditBox>
+
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                this:RegisterForDrag("LeftButton");
+                this:SetMovable(1);
+                this:SetUserPlaced(true);
+            </OnLoad>
+            <OnDragStart>
+                this:StartMoving();
+                this.isMoving = true;
+            </OnDragStart>
+            <OnDragStop>
+                this:StopMovingOrSizing();
+                this.isMoving = false;
+            </OnDragStop>
+        </Scripts>
+    </Frame>
+
+</Ui>
+

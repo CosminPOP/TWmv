@@ -23,7 +23,6 @@ mv:RegisterEvent("CHAT_MSG_SYSTEM")
 mv:RegisterEvent("ADDON_LOADED")
 
 mv.cats = {}
-mv.cats = {}
 
 local gModel = nil
 
@@ -109,6 +108,8 @@ mv:SetScript("OnEvent", function()
 
                 gModel = getglobal('mvmodel')
                 gModel:SetModel("World\\wmo\\Monoman\\Utari\\utari_hall_01.wmo")
+                --todo
+                --Model:SetCamera(index)
                 gModel:SetAlpha(1)
 
                 --if true then return false end;
@@ -204,7 +205,7 @@ mv.searchResults = {}
 
 function SearchBox_OnEnterPressed(q)
     mv.fromSearch = true
-    mv.fromNear = true
+    mv.fromNear = false
     mv.searchResults = {}
 
     for cat, data in next, mv.cats do
@@ -304,6 +305,8 @@ mv.currentGO = {
 
 function LoadModelButton_OnClick(d)
 
+    mvprint('load model ' .. d);
+
     if mv.fromNear then
         for i, model in next, mv.near do
             if tonumber(model.guid) == tonumber(d) then
@@ -320,7 +323,7 @@ function LoadModelButton_OnClick(d)
     else
         for cat, data in next, mv.cats do
             for index, model in next, data do
-                if d == tonumber(model.id) then
+                if tonumber(d) == tonumber(model.id) then
                     gModel:SetModel(model.filename)
                     mv.currentModel = model.id
                 end

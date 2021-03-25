@@ -102,19 +102,51 @@ mv:SetScript("OnEvent", function()
         if event == "ADDON_LOADED" then
             if arg1 == "TWmv" then
 
-                local posX, posY, posZ = GetPlayerMapPosition("player");
-
                 getglobal('TWmvAddGOButton'):Disable()
 
                 gModel = getglobal('mvmodel')
                 gModel:SetModel("World\\wmo\\Monoman\\Utari\\utari_hall_01.wmo")
-                --todo
-                --Model:SetCamera(index)
-                gModel:SetAlpha(1)
 
-                --if true then return false end;
+                gModel:SetScript('OnMouseUp', function(self)
+                    gModel:SetScript('OnUpdate', nil)
+                end)
 
-                for index, data in next, TWmodels do
+                gModel:SetScript('OnMouseWheel', function(self, spining)
+                    local Z, X, Y = gModel:GetPosition()
+                    Z = (arg1 > 0 and Z + 1 or Z - 1)
+
+                    gModel:SetPosition(Z, X, Y)
+                end)
+
+                gModel:SetScript('OnMouseDown', function()
+                    local StartX, StartY = GetCursorPosition()
+
+                    local EndX, EndY, Z, X, Y
+                    if arg1 == 'LeftButton' then
+                        gModel:SetScript('OnUpdate', function(self)
+                            EndX, EndY = GetCursorPosition()
+
+                            gModel.rotation = (EndX - StartX) / 34 + gModel:GetFacing()
+
+                            gModel:SetFacing(gModel.rotation)
+
+                            StartX, StartY = GetCursorPosition()
+                        end)
+                    elseif arg1 == 'RightButton' then
+                        gModel:SetScript('OnUpdate', function(self)
+                            EndX, EndY = GetCursorPosition()
+
+                            Z, X, Y = gModel:GetPosition(Z, X, Y)
+                            X = (EndX - StartX) / 45 + X
+                            Y = (EndY - StartY) / 45 + Y
+
+                            gModel:SetPosition(Z, X, Y)
+                            StartX, StartY = GetCursorPosition()
+                        end)
+                    end
+                end)
+
+                for _, data in next, TWmodels do
                     if tonumber(data.id) >= 1000000 then
                         local ex = string.split(data.filename, '\\')
 
@@ -132,8 +164,8 @@ mv:SetScript("OnEvent", function()
 
                 local models = 0
 
-                for cat, data in next, mv.cats do
-                    for index, model in next, data do
+                for _, data in next, mv.cats do
+                    for _, _ in next, data do
                         models = models + 1
                     end
                 end
@@ -145,19 +177,6 @@ mv:SetScript("OnEvent", function()
         end
     end
 end)
-
-function XmogModel_OnLoad()
-    getglobal('XmogModel').rotation = 0.61;
-    getglobal('XmogModel'):SetRotation(getglobal('XmogModel').rotation);
-end
-
-function RoateModel_Left()
-    Model_RotateLeft(getglobal('XmogModel'))
-end
-
-function RoateModel_Right()
-    Model_RotateLeft(getglobal('XmogModel'))
-end
 
 mv.catsFrames = {}
 
@@ -176,7 +195,7 @@ function CatsList_Update()
     if totalItems > 0 then
 
         local index = 0
-        for cat, data in next, mv.cats do
+        for cat, _ in next, mv.cats do
 
             index = index + 1
 
@@ -206,10 +225,11 @@ mv.searchResults = {}
 function SearchBox_OnEnterPressed(q)
     mv.fromSearch = true
     mv.fromNear = false
+    getglobal('TWmvAddGOButton'):SetText('Add GO')
     mv.searchResults = {}
 
-    for cat, data in next, mv.cats do
-        for index, model in next, data do
+    for _, data in next, mv.cats do
+        for _, model in next, data do
             if string.find(string.lower(model.short), string.lower(q), 1, true) or
                     string.find(string.lower(model.filename), string.lower(q), 1, true) then
                 table.insert(mv.searchResults, model)
@@ -221,6 +241,14 @@ function SearchBox_OnEnterPressed(q)
     getglobal('TWmvModelsTitle'):SetText('Results')
 
     ModelsList_Update()
+end
+
+function TWMVToggleMainWindow()
+    if getglobal('TWmv'):IsVisible() == 1 then
+        getglobal('TWmv'):Hide()
+    else
+        getglobal('TWmv'):Show()
+    end
 end
 
 function CatButton_OnClick(catName)
@@ -282,9 +310,7 @@ function ModelsList_Update()
                 mv.modelsFrames[index]:SetPoint("TOPLEFT", getglobal("TWmv"), "TOPLEFT", 230, -22 - 22 * (index - itemOffset) - 55)
                 mv.modelsFrames[index]:Show()
 
-                getglobal("TWModelFrame" .. index .. 'LoadButton'):SetText(
-                        string.sub(model.short, 0, 20)
-                )
+                getglobal("TWModelFrame" .. index .. 'LoadButton'):SetText(string.sub(model.short, 0, 20))
                 getglobal("TWModelFrame" .. index .. 'LoadButton'):SetID(tonumber(model.id))
             end
         end
@@ -305,7 +331,7 @@ mv.currentGO = {
 
 function LoadModelButton_OnClick(d)
 
-    mvprint('load model ' .. d);
+    --mvprint('load model ' .. d);
 
     if mv.fromNear then
         for i, model in next, mv.near do
@@ -330,6 +356,9 @@ function LoadModelButton_OnClick(d)
             end
         end
     end
+
+    gModel:SetPosition(0, 0, 0)
+    gModel:SetFacing(0)
 
     getglobal('TWmvAddGOButton'):Enable()
 end
@@ -405,50 +434,6 @@ mv.modelPos = {
     y = 0,
     z = 0
 }
-
-function MVmodelWHeel(a, arg)
-
-    if arg == -1 then
-        --gModel:SetModelScale(gModel:GetModelScale() - 0.1)
-        mv.modelPos.x = mv.modelPos.x - 1
-        gModel:SetPosition(mv.modelPos.x, mv.modelPos.y, mv.modelPos.z)
-    else
-        --gModel:SetModelScale(gModel:GetModelScale() + 0.1)
-        mv.modelPos.x = mv.modelPos.x + 1
-        gModel:SetPosition(mv.modelPos.x, mv.modelPos.y, mv.modelPos.z)
-    end
-end
-
-function MVmodelDrag(arg)
-    --gModel:SetPosition(0, 0, 0)
-    if arg == 'LeftButton' then
-        --rotate
-    else
-        --pan
-        if true then
-            return false
-        end ;
-
-        local x, y = GetCursorPosition();
-        local s = gModel:GetEffectiveScale();
-        x, y = x / s, y / s;
-
-        local cx = x - gModel:GetLeft()
-        local cy = gModel:GetTop() - y
-
-        -- -1 = 0
-        -- 0 = 512/2
-        -- 1 = 512
-        local newX, newY
-        --if cx <= 512 / 2 then
-        --    newX =
-        --end
-
-        --gModel:SetPosition(cx / 512, 0, 0)
-
-    end
-
-end
 
 function FactorChange_OnClick(dir)
 

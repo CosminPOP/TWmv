@@ -385,7 +385,7 @@
         </Scripts>
     </Frame>
 
-    <Frame name="TWmv" hidden="false" toplevel="true" parent="UIParent" movable="true"
+    <Frame name="TWmv" hidden="true" toplevel="true" parent="UIParent" movable="true"
            enableMouse="true">
         <Size>
             <AbsDimension x="1024" y="530"/>
@@ -489,6 +489,65 @@
         </Layers>
         <Frames>
 
+            <Button name="$parentMinimap" movable="true" parent="UIParent" enableMouse="true" toplevel="true"
+                    frameStrata="LOW">
+                <Size x="33" y="33"/>
+                <Anchors>
+                    <Anchor point="LEFT" relativeTo="Minimap" relativePoint="LEFT"/>
+                </Anchors>
+                <Layers>
+                    <Layer level="BACKGROUND">
+                        <Texture file="Interface\Icons\inv_misc_stonetablet_05">
+                            <Size x="21" y="21"/>
+                            <Anchors>
+                                <Anchor point="TOPLEFT">
+                                    <Offset x="7" y="-6"/>
+                                </Anchor>
+                            </Anchors>
+                            <TexCoords left="0.075" right="0.925" top="0.075" bottom="0.925"/>
+                        </Texture>
+                    </Layer>
+                    <Layer level="OVERLAY">
+                        <Texture file="Interface\Minimap\MiniMap-TrackingBorder">
+                            <Size x="56" y="56"/>
+                            <Anchors>
+                                <Anchor point="TOPLEFT"/>
+                            </Anchors>
+                        </Texture>
+                    </Layer>
+                </Layers>
+                <HighlightTexture alphaMode="ADD" file="Interface\Minimap\UI-Minimap-ZoomButton-Highlight"/>
+                <Scripts>
+                    <OnLoad>
+                        this:RegisterForClicks("RightButtonUp")
+                        this:RegisterForDrag("LeftButton")
+                        this:SetClampedToScreen(true)
+                    </OnLoad>
+                    <OnDragStart>
+                        this:LockHighlight()
+                        this:StartMoving()
+                    </OnDragStart>
+                    <OnDragStop>
+                        this:UnlockHighlight()
+                        this:StopMovingOrSizing()
+                    </OnDragStop>
+                    <OnEnter>
+                        GameTooltip:SetOwner(this, "ANCHOR_TOPLEFT", 0, 0)
+                        GameTooltip:AddLine('TWmv', 1, 1, 1)
+                        GameTooltip:AddLine('Left-click to toggle frame')
+                        GameTooltip:Show()
+                    </OnEnter>
+                    <OnLeave>
+                        GameTooltip:Hide()
+                    </OnLeave>
+                    <OnMouseUp>
+                        if arg1 == "LeftButton" then
+                        TWMVToggleMainWindow()
+                        end
+                    </OnMouseUp>
+                </Scripts>
+            </Button>
+
             <ScrollFrame name="MVCatsScrollFrame" hidden="false" inherits="FauxScrollFrameTemplate">
                 <Size>
                     <AbsDimension x="200" y="402"/>
@@ -535,85 +594,28 @@
                 </Anchors>
             </Button>
 
-            <PlayerModel name="mvmodel" scale="1" enableMouse="true">
+            <DressUpModel name="mvmodel" scale="1" enableMouse="true">
                 <Size>
-                    <AbsDimension x="570" y="403"/>
+                    <AbsDimension x="574" y="405"/>
                 </Size>
                 <Anchors>
                     <Anchor point="TOPLEFT">
                         <Offset>
-                            <AbsDimension x="443" y="-75"/>
+                            <AbsDimension x="440" y="-75"/>
                         </Offset>
                     </Anchor>
                 </Anchors>
                 <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
                           tile="false">
-                    <TileSize>
-                        <AbsValue val="1"/>
-                    </TileSize>
                 </Backdrop>
                 <Scripts>
-                    <OnUpdate>
-                        <!--                            XmogModel_OnUpdate(arg1, this);-->
-                    </OnUpdate>
                     <OnMouseWheel>
-                        MVmodelWHeel(this, arg1)
+                        <!--                                MVmodelWHeel(this, arg1)-->
                     </OnMouseWheel>
-                    <OnLoad>
-                        this:RegisterForDrag("LeftButton", "RightButton")
-                    </OnLoad>
-                    <OnDragStart>
-                        MVmodelDrag(arg1)
-                    </OnDragStart>
-                    <OnDragStop>
-                        MVmodelDrag(arg1)
-                    </OnDragStop>
                 </Scripts>
                 <Frames>
-                    <Button name="XmogModelRotateLeftButton" hidden="true">
-                        <Size>
-                            <AbsDimension x="35" y="35"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPLEFT">
-                                <Offset>
-                                    <AbsDimension x="21" y="5"/>
-                                </Offset>
-                            </Anchor>
-                        </Anchors>
-                        <Scripts>
-                            <OnLoad>
-                                this:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
-                            </OnLoad>
-                            <OnClick>
-                                RoateModel_Left()
-                            </OnClick>
-                        </Scripts>
-                        <NormalTexture file="Interface\Buttons\UI-RotationLeft-Button-Up"/>
-                        <PushedTexture file="Interface\Buttons\UI-RotationLeft-Button-Down"/>
-                        <HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
-                    </Button>
-                    <Button name="XmogModelRotateRightButton" hidden="true">
-                        <Size>
-                            <AbsDimension x="35" y="35"/>
-                        </Size>
-                        <Anchors>
-                            <Anchor point="TOPLEFT" relativeTo="XmogModelRotateLeftButton" relativePoint="TOPRIGHT"/>
-                        </Anchors>
-                        <Scripts>
-                            <OnLoad>
-                                this:RegisterForClicks("LeftButtonDown", "LeftButtonUp");
-                            </OnLoad>
-                            <OnClick>
-                                RoateModel_Right()
-                            </OnClick>
-                        </Scripts>
-                        <NormalTexture file="Interface\Buttons\UI-RotationRight-Button-Up"/>
-                        <PushedTexture file="Interface\Buttons\UI-RotationRight-Button-Down"/>
-                        <HighlightTexture file="Interface\Buttons\ButtonHilight-Round" alphaMode="ADD"/>
-                    </Button>
                 </Frames>
-            </PlayerModel>
+            </DressUpModel>
 
             <Button name="$parentAddGOButton" inherits="UIPanelButtonTemplate2" text="Add GO">
                 <Size>

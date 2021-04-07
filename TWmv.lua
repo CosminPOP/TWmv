@@ -99,81 +99,80 @@ mv:SetScript("OnEvent", function()
                 })
             end
         end
-        if event == "ADDON_LOADED" then
-            if arg1 == "TWmv" then
+        if event == "ADDON_LOADED" and arg1 == "TWmv" then
 
-                getglobal('TWmvAddGOButton'):Disable()
+            getglobal('TWmvAddGOButton'):Disable()
 
-                gModel = getglobal('mvmodel')
-                gModel:SetModel("World\\wmo\\Monoman\\Utari\\utari_hall_01.wmo")
+            gModel = getglobal('mvmodel')
+            gModel:SetModel("World\\wmo\\Monoman\\Utari\\utari_hall_01.wmo")
 
-                gModel:SetScript('OnMouseUp', function(self)
-                    gModel:SetScript('OnUpdate', nil)
-                end)
+            gModel:SetScript('OnMouseUp', function(self)
+                gModel:SetScript('OnUpdate', nil)
+            end)
 
-                gModel:SetScript('OnMouseWheel', function(self, spining)
-                    local Z, X, Y = gModel:GetPosition()
-                    Z = (arg1 > 0 and Z + 1 or Z - 1)
+            gModel:SetScript('OnMouseWheel', function(self, spining)
+                local Z, X, Y = gModel:GetPosition()
+                Z = (arg1 > 0 and Z + 1 or Z - 1)
 
-                    gModel:SetPosition(Z, X, Y)
-                end)
+                gModel:SetPosition(Z, X, Y)
+            end)
 
-                gModel:SetScript('OnMouseDown', function()
-                    local StartX, StartY = GetCursorPosition()
+            gModel:SetScript('OnMouseDown', function()
+                local StartX, StartY = GetCursorPosition()
 
-                    local EndX, EndY, Z, X, Y
-                    if arg1 == 'LeftButton' then
-                        gModel:SetScript('OnUpdate', function(self)
-                            EndX, EndY = GetCursorPosition()
+                local EndX, EndY, Z, X, Y
+                if arg1 == 'LeftButton' then
+                    gModel:SetScript('OnUpdate', function(self)
+                        EndX, EndY = GetCursorPosition()
 
-                            gModel.rotation = (EndX - StartX) / 34 + gModel:GetFacing()
+                        gModel.rotation = (EndX - StartX) / 34 + gModel:GetFacing()
 
-                            gModel:SetFacing(gModel.rotation)
+                        gModel:SetFacing(gModel.rotation)
 
-                            StartX, StartY = GetCursorPosition()
-                        end)
-                    elseif arg1 == 'RightButton' then
-                        gModel:SetScript('OnUpdate', function(self)
-                            EndX, EndY = GetCursorPosition()
+                        StartX, StartY = GetCursorPosition()
+                    end)
+                elseif arg1 == 'RightButton' then
+                    gModel:SetScript('OnUpdate', function(self)
+                        EndX, EndY = GetCursorPosition()
 
-                            Z, X, Y = gModel:GetPosition(Z, X, Y)
-                            X = (EndX - StartX) / 45 + X
-                            Y = (EndY - StartY) / 45 + Y
+                        Z, X, Y = gModel:GetPosition(Z, X, Y)
+                        X = (EndX - StartX) / 45 + X
+                        Y = (EndY - StartY) / 45 + Y
 
-                            gModel:SetPosition(Z, X, Y)
-                            StartX, StartY = GetCursorPosition()
-                        end)
+                        gModel:SetPosition(Z, X, Y)
+                        StartX, StartY = GetCursorPosition()
+                    end)
+                end
+            end)
+
+            for _, data in next, TWmodels do
+                if tonumber(data.id) >= 1000000 then
+                    local ex = string.split(data.filename, '\\')
+
+                    local key = ex[table.getn(ex) - 1]
+
+                    if mv.cats[key] == nil then
+                        mv.cats[key] = {}
                     end
-                end)
 
-                for _, data in next, TWmodels do
-                    if tonumber(data.id) >= 1000000 then
-                        local ex = string.split(data.filename, '\\')
-
-                        local key = ex[table.getn(ex) - 1]
-
-                        if mv.cats[key] == nil then
-                            mv.cats[key] = {}
-                        end
-
-                        table.insert(mv.cats[key], data);
-
-                    end
+                    table.insert(mv.cats[key], data);
 
                 end
 
-                local models = 0
-
-                for _, data in next, mv.cats do
-                    for _, _ in next, data do
-                        models = models + 1
-                    end
-                end
-
-                getglobal('TWmvGOCount'):SetText(models)
-
-                CatsList_Update()
             end
+
+            local models = 0
+
+            for _, data in next, mv.cats do
+                for _, _ in next, data do
+                    models = models + 1
+                end
+            end
+
+            getglobal('TWmvGOCount'):SetText(models)
+
+            CatsList_Update()
+
         end
     end
 end)
@@ -249,6 +248,7 @@ function TWMVToggleMainWindow()
     else
         getglobal('TWmv'):Show()
     end
+    CatsList_Update()
 end
 
 function CatButton_OnClick(catName)

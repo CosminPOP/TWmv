@@ -59,6 +59,7 @@ mv:SetScript("OnEvent", function()
                 ModelsList_Update()
                 getglobal('TWmvAddGOButton'):SetText('Manage')
                 getglobal('TWmvGOCount'):SetText(table.getn(mv.near))
+                mv.visited = {}
             end
             if string.find(arg1, ', Entry ', 1, true) and
                     string.find(arg1, 'MapId:') then
@@ -262,6 +263,7 @@ function CatButton_OnClick(catName)
     getglobal('TWmvAddGOButton'):SetText('Add GO')
     getglobal('TWmvAddGOButton'):Disable()
     ModelsList_Update()
+    mv.visited = {}
 end
 
 mv.modelsFrames = {}
@@ -312,7 +314,12 @@ function ModelsList_Update()
                 mv.modelsFrames[index]:SetPoint("TOPLEFT", getglobal("TWmv"), "TOPLEFT", 230, -22 - 22 * (index - itemOffset) - 55)
                 mv.modelsFrames[index]:Show()
 
-                getglobal("TWModelFrame" .. index .. 'LoadButton'):SetText(string.sub(model.short, 0, 20))
+                if mv.visited[model.id] then
+                    getglobal("TWModelFrame" .. index .. 'LoadButton'):SetText("|cffffffff" .. string.sub(model.short, 0, 20))
+                else
+                    getglobal("TWModelFrame" .. index .. 'LoadButton'):SetText(string.sub(model.short, 0, 20))
+                end
+
                 getglobal("TWModelFrame" .. index .. 'LoadButton'):SetID(tonumber(model.id))
             end
         end
@@ -323,6 +330,8 @@ function ModelsList_Update()
 
 end
 
+mv.visited = {}
+
 mv.currentModel = 0
 mv.currentGO = {
     guid = 0,
@@ -331,8 +340,7 @@ mv.currentGO = {
     z = 0
 }
 
-function LoadModelButton_OnClick(d)
-
+function LoadModelButton_OnClick(d, b)
 
     if mv.fromNear then
         for i, model in next, mv.near do
@@ -343,6 +351,10 @@ function LoadModelButton_OnClick(d)
                     y = model.y,
                     z = model.z
                 }
+
+                mv.visited[model.id] = true
+                b:SetText("|cffffffff" .. b:GetText())
+
                 gModel:SetModel(model.filename)
                 mv.currentModel = model.id
             end
@@ -351,6 +363,9 @@ function LoadModelButton_OnClick(d)
         for cat, data in next, mv.cats do
             for index, model in next, data do
                 if tonumber(d) == tonumber(model.id) then
+
+                    mv.visited[model.id] = true
+                    b:SetText("|cffffffff" .. b:GetText())
 
                     mvprint('id ' .. model.id);
                     mvprint('filename ' .. model.filename);

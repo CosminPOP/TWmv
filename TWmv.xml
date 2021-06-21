@@ -58,9 +58,7 @@
             <Color a=".3"/>
         </Backdrop>
         <Frames>
-
             <Button name="$parentLoadButton" inherits="UIPanelButtonTemplate2" text="">
-
                 <Size>
                     <AbsDimension x="180" y="20"/>
                 </Size>
@@ -73,7 +71,7 @@
                 </Anchors>
                 <Scripts>
                     <OnClick>
-                        LoadModelButton_OnClick(this:GetID())
+                        LoadModelButton_OnClick(this:GetID(), this)
                     </OnClick>
                 </Scripts>
             </Button>

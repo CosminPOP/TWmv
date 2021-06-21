@@ -367,6 +367,43 @@
                 </Scripts>
             </Button>
 
+
+            <Button name="$parentSP" inherits="UIPanelButtonTemplate2" text="Scale +">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="250" y="-80"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        ScaleGo_OnClick(1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+
+            <Button name="$parentSM" inherits="UIPanelButtonTemplate2" text="Scale -">
+                <Size>
+                    <AbsDimension x="80" y="20"/>
+                </Size>
+                <Anchors>
+                    <Anchor point="TOPLEFT">
+                        <Offset>
+                            <AbsDimension x="250" y="-110"/>
+                        </Offset>
+                    </Anchor>
+                </Anchors>
+                <Scripts>
+                    <OnClick>
+                        ScaleGo_OnClick(-1)
+                    </OnClick>
+                </Scripts>
+            </Button>
+
         </Frames>
         <Scripts>
             <OnLoad>

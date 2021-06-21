@@ -49,6 +49,8 @@ mv:SetScript("OnEvent", function()
 
                 getglobal('TWmvGOGUIDText'):SetText('GUID: ' .. mv.currentGO.guid)
 
+                mv.currentGO.scale = 1
+
                 getglobal('TWmv'):Hide()
                 getglobal('TWmvGO'):Show()
             end
@@ -331,7 +333,6 @@ mv.currentGO = {
 
 function LoadModelButton_OnClick(d)
 
-    --mvprint('load model ' .. d);
 
     if mv.fromNear then
         for i, model in next, mv.near do
@@ -350,6 +351,10 @@ function LoadModelButton_OnClick(d)
         for cat, data in next, mv.cats do
             for index, model in next, data do
                 if tonumber(d) == tonumber(model.id) then
+
+                    mvprint('id ' .. model.id);
+                    mvprint('filename ' .. model.filename);
+
                     gModel:SetModel(model.filename)
                     mv.currentModel = model.id
                 end
@@ -367,6 +372,8 @@ function AddGoButton_OnClick()
 
     if mv.fromNear then
         getglobal('TWmvGOGUIDText'):SetText('GUID: ' .. mv.currentGO.guid)
+
+        mv.currentGO.scale = 1
 
         getglobal('TWmv'):Hide()
         getglobal('TWmvGO'):Show()
@@ -404,6 +411,11 @@ end
 function MoveGoZ_OnClick(dir)
     mv.currentGO.z = mv.currentGO.z + dir * mv.moveRate
     SendChatMessage('.gobject move ' .. mv.currentGO.guid .. ' ' .. mv.currentGO.x .. ' ' .. mv.currentGO.y .. ' ' .. mv.currentGO.z)
+end
+
+function ScaleGo_OnClick(dir)
+    mv.currentGO.scale = mv.currentGO.scale + dir * mv.moveRate
+    SendChatMessage('.gobject scale ' .. mv.currentGO.guid .. ' ' .. mv.currentGO.scale)
 end
 
 function TurnGo_OnClick()
